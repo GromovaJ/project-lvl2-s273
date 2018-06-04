@@ -1,6 +1,6 @@
 {
   "name": "gendiff-gr",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "difference generator",
   "main": "index.js",
   "bin": {
@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "babel-node": "babel-node",
     "eslint": "eslint",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
@@ -25,12 +25,18 @@
   "bugs": {
     "url": "https://github.com/GromovaJ/project-lvl2-s273/issues"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "homepage": "https://github.com/GromovaJ/project-lvl2-s273#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
+    "babel-jest": "^22.4.3",
+    "babel-plugin-transform-runtime": "*",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
