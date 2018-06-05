@@ -1,7 +1,5 @@
-/*  eslint no-console: "error"  */
-
-const fs = require('fs');
-const _ = require('lodash');
+import fs from 'fs';
+import _ from 'lodash';
 
 const getFileContent = (filePath) => {
   if (!fs.existsSync(filePath)) {
@@ -41,4 +39,4 @@ const genDiff = (firstFile, secondFile) => {
   });
   return `{\n${_.flatten(results).join('\n')}\n}\n`;
 };
-module.exports.genDiff = genDiff;
+export default genDiff;
