@@ -1,6 +1,6 @@
 import fs from 'fs';
 import assert from 'assert';
-import { genDiff } from '../src/';
+import genDiff from '../src/';
 
 describe('test', () => {
   it('jsonDiff', () => {
