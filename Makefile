@@ -17,3 +17,7 @@ lint:
 test:
 
 	npm test
+
+watch:
+
+	npm test -- --watch	

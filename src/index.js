@@ -1,5 +1,7 @@
 import fs from 'fs';
 import _ from 'lodash';
+import path from 'path';
+import getParser from './parsers';
 
 const getFileContent = (filePath) => {
   if (!fs.existsSync(filePath)) {
@@ -28,8 +30,10 @@ const valueSettings = [
 ];
 
 const genDiff = (firstFile, secondFile) => {
-  const firstObj = JSON.parse(getFileContent(firstFile));
-  const secondObj = JSON.parse(getFileContent(secondFile));
+  const format = path.extname(firstFile).slice(1);
+  const parse = getParser(format);
+  const firstObj = parse(getFileContent(firstFile));
+  const secondObj = parse(getFileContent(secondFile));
   const firstObjkeys = _.keys(firstObj);
   const secondObjkeys = _.keys(secondObj);
   const keys = _.union(firstObjkeys, secondObjkeys);
