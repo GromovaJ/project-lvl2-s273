@@ -1,6 +1,6 @@
 {
   "name": "gendiff-gr",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "difference generator",
   "main": "index.js",
   "bin": {
@@ -40,11 +40,14 @@
     "babel-preset-stage-0": "^6.24.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-flowtype": "^2.49.3",
     "eslint-plugin-import": "^2.9.0",
-    "eslint-plugin-jest": "^21.15.0"
+    "eslint-plugin-jest": "^21.15.0",
+    "jest": "^22.4.3",
+    "jest-cli": "^22.4.3"
   },
   "dependencies": {
-    "commander": "^2.15.1"
+    "commander": "^2.15.1",
+    "lodash": "^4.17.10"
   }
 }
