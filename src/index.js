@@ -24,10 +24,11 @@ const actionProperties = [
 
 const genDiff = (firstFile, secondFile) => {
   const getFileContent = filePath => fs.readFileSync(filePath, 'utf-8');
+  console.log(getFileContent(firstFile));
   const format = path.extname(firstFile).slice(1);
-  const parse = getParser(format);
-  const firstObj = parse(getFileContent(firstFile));
-  const secondObj = parse(getFileContent(secondFile));
+  const pars = getParser(format);
+  const firstObj = pars(getFileContent(firstFile));
+  const secondObj = pars(getFileContent(secondFile));
   const firstObjkeys = _.keys(firstObj);
   const secondObjkeys = _.keys(secondObj);
   const keys = _.union(firstObjkeys, secondObjkeys);
