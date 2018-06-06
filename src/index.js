@@ -24,7 +24,6 @@ const actionProperties = [
 
 const genDiff = (firstFile, secondFile) => {
   const getFileContent = filePath => fs.readFileSync(filePath, 'utf-8');
-  console.log(getFileContent(firstFile));
   const format = path.extname(firstFile).slice(1);
   const pars = getParser(format);
   const firstObj = pars(getFileContent(firstFile));
