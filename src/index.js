@@ -4,45 +4,46 @@ import path from 'path';
 import getParser from './parsers';
 import getRender from './render';
 
-const statusActions = [
+const typeActions = [
   {
-    status: 'withChildren',
-    check: (obj1, obj2, key) => (_.isObject(obj1[key]) && _.isObject(obj2[key])),
-    process: (obj1, obj2, key, func) => func(obj1[key], obj2[key]),
+    type: 'withChildren',
+    check: (arg1, arg2) => !(arg1 instanceof Array && arg2 instanceof Array) &&
+    (arg1 instanceof Object && arg2 instanceof Object),
+    process: (arg1, arg2, func) => ({ children: func(arg1, arg2) }),
   },
   {
-    status: 'deleted',
-    check: (obj1, obj2, key) => (_.has(obj1, key) && !_.has(obj2, key)),
-    process: (obj1, obj2, key) => obj1[key],
+    type: 'deleted',
+    check: (arg1, arg2) => (arg1 && !arg2),
+    process: arg1 => ({ value: arg1 }),
   },
   {
-    status: 'added',
-    check: (obj1, obj2, key) => (!_.has(obj1, key) && _.has(obj2, key)),
-    process: (obj1, obj2, key) => obj2[key],
+    type: 'added',
+    check: (arg1, arg2) => (!arg1 && arg2),
+    process: (arg1, arg2) => ({ value: arg2 }),
   },
   {
-    status: 'changed',
-    check: (obj1, obj2, key) => obj1[key] !== obj2[key],
-    process: (obj1, obj2, key) => ({
-      valueBefore: obj1[key],
-      valueAfter: obj2[key],
-    }),
+    type: 'changed',
+    check: (arg1, arg2) => !(arg1 instanceof Object && arg2 instanceof Object) &&
+    (arg1 !== arg2),
+    process: (arg1, arg2) => ({ value: { valueBefore: arg1, valueAfter: arg2 } }),
   },
   {
-    status: 'notChanged',
-    check: (obj1, obj2, key) => obj1[key] === obj2[key],
-    process: (obj1, obj2, key) => obj1[key],
+    type: 'notChanged',
+    check: (arg1, arg2) => arg1 === arg2,
+    process: arg1 => ({ value: arg1 }),
   },
 ];
 
-const getStatusAction = (argObj1, argObj2, argKey) =>
-  _.find(statusActions, ({ check }) => check(argObj1, argObj2, argKey));
+const getTypeAction = (argObj1, argObj2) =>
+  _.find(typeActions, ({ check }) => check(argObj1, argObj2));
 
 const getAst = (objBefore, objAfter) => {
   const keys = _.union(_.keys(objBefore), _.keys(objAfter));
   const resultAst = keys.map((key) => {
-    const { status, process } = getStatusAction(objBefore, objAfter, key);
-    return ({ status, name: key, value: process(objBefore, objAfter, key, getAst) });
+    const valBefore = objBefore[key];
+    const valAfter = objAfter[key];
+    const { type, process } = getTypeAction(valBefore, valAfter);
+    return { type, name: key, ...process(valBefore, valAfter, getAst) };
   });
   return resultAst;
 };

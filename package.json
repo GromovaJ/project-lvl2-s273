@@ -1,6 +1,6 @@
 {
   "name": "gendiff-gr",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "difference generator",
   "main": "index.js",
   "bin": {

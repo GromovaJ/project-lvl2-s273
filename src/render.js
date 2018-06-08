@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
-const stringActions = [
+const actionProperties = [
   {
-    check: value => _.isObject(value),
+    check: value => (value instanceof Object && !(value instanceof Array)),
     action: (name, value, level) => {
       const convertObjToString = (obj, lev) => {
         const result = _.keys(obj).map(key => ` ${key}: ${obj[key]}`).join('\n');
@@ -12,31 +12,49 @@ const stringActions = [
     },
   },
   {
-    check: value => !_.isObject(value),
+    check: value => !(value instanceof Object),
     action: (name, value) => `${name}: ${value}`,
   },
 ];
 
-
 const stringify = (name, value, level) => {
-  const { action } = _.find(stringActions, ({ check }) => check(value));
+  const { action } = _.find(actionProperties, ({ check }) => check(value));
   return action(name, value, level);
 };
 
-const outputStrings = {
-  withChildren: (name, value, level, func) => `  ${name}: {\n${func(value, level + 4)}\n${' '.repeat(level + 2)}}`,
-  added: (name, value, level) => `+ ${stringify(name, value, level)}`,
-  deleted: (name, value, level) => `- ${stringify(name, value, level)}`,
-  notChanged: (name, value, level) => `  ${stringify(name, value, level)}`,
-  changed: (name, value, level) => `+ ${stringify(name, value.valueAfter, level)}\n${
-    ' '.repeat(level)}- ${stringify(name, value.valueBefore, level)}`,
-};
+const outputProperties = [
+  {
+    type: 'withChildren',
+    status: ' ',
+    getOutputStr: (obj, level, func) => `  ${obj.name}: {\n${
+      func(obj.children, level + 4)}\n${' '.repeat(level + 2)}}`,
+  },
+  {
+    type: 'deleted',
+    getOutputStr: (obj, level) => `- ${stringify(obj.name, obj.value, level)}`,
+  },
+  {
+    type: 'added',
+    getOutputStr: (obj, level) => `+ ${stringify(obj.name, obj.value, level)}`,
+  },
+  {
+    type: 'notChanged',
+    getOutputStr: (obj, level) => `  ${stringify(obj.name, obj.value, level)}`,
+  },
+  {
+    type: 'changed',
+    getOutputStr: (obj, level) => `+ ${
+      stringify(obj.name, obj.value.valueAfter, level)}\n${' '.repeat(level)}- ${
+      stringify(obj.name, obj.value.valueBefore, level)}`,
+  },
+];
 
 const getRender = (ast, level = 2) => {
-  const resultString = ast.map(({ name, value, status }) => {
-    const getOutputString = outputStrings[status];
-    return ' '.repeat(level) + getOutputString(name, value, level, getRender);
+  const resultString = ast.map((arg) => {
+    const { getOutputStr } = _.find(outputProperties, ({ type }) => type === arg.type);
+    return ' '.repeat(level) + getOutputStr(arg, level, getRender);
   }).join('\n');
   return resultString;
 };
+
 export default getRender;
