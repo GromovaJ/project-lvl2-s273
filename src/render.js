@@ -22,37 +22,20 @@ const stringify = (name, value, level) => {
   return action(name, value, level);
 };
 
-const outputProperties = [
-  {
-    type: 'withChildren',
-    status: ' ',
-    getOutputStr: (obj, level, func) => `  ${obj.name}: {\n${
-      func(obj.children, level + 4)}\n${' '.repeat(level + 2)}}`,
-  },
-  {
-    type: 'deleted',
-    getOutputStr: (obj, level) => `- ${stringify(obj.name, obj.value, level)}`,
-  },
-  {
-    type: 'added',
-    getOutputStr: (obj, level) => `+ ${stringify(obj.name, obj.value, level)}`,
-  },
-  {
-    type: 'notChanged',
-    getOutputStr: (obj, level) => `  ${stringify(obj.name, obj.value, level)}`,
-  },
-  {
-    type: 'changed',
-    getOutputStr: (obj, level) => `+ ${
-      stringify(obj.name, obj.value.valueAfter, level)}\n${' '.repeat(level)}- ${
-      stringify(obj.name, obj.value.valueBefore, level)}`,
-  },
-];
+const outputStrings = {
+  withChildren: (obj, level, func) => `  ${obj.name}: {\n${func(obj.children, level + 4)}\n${' '.repeat(level + 2)}}`,
+  deleted: (obj, level) => `- ${stringify(obj.name, obj.value, level)}`,
+  added: (obj, level) => `+ ${stringify(obj.name, obj.value, level)}`,
+  unchanged: (obj, level) => `  ${stringify(obj.name, obj.value, level)}`,
+  changed: (obj, level) => `+ ${
+    stringify(obj.name, obj.valueAfter, level)}\n${' '.repeat(level)}- ${
+    stringify(obj.name, obj.valueBefore, level)}`,
+};
 
 const getRender = (ast, level = 2) => {
-  const resultString = ast.map((arg) => {
-    const { getOutputStr } = _.find(outputProperties, ({ type }) => type === arg.type);
-    return ' '.repeat(level) + getOutputStr(arg, level, getRender);
+  const resultString = ast.map((node) => {
+    const getOutputStr = outputStrings[node.type];
+    return ' '.repeat(level) + getOutputStr(node, level, getRender);
   }).join('\n');
   return resultString;
 };

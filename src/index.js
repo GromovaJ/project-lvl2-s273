@@ -25,10 +25,10 @@ const typeActions = [
     type: 'changed',
     check: (arg1, arg2) => !(arg1 instanceof Object && arg2 instanceof Object) &&
     (arg1 !== arg2),
-    process: (arg1, arg2) => ({ value: { valueBefore: arg1, valueAfter: arg2 } }),
+    process: (arg1, arg2) => ({ valueBefore: arg1, valueAfter: arg2 }),
   },
   {
-    type: 'notChanged',
+    type: 'unchanged',
     check: (arg1, arg2) => arg1 === arg2,
     process: arg1 => ({ value: arg1 }),
   },
