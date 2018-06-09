@@ -7,43 +7,40 @@ import getRender from './render';
 const typeActions = [
   {
     type: 'withChildren',
-    check: (arg1, arg2) => !(arg1 instanceof Array && arg2 instanceof Array) &&
-    (arg1 instanceof Object && arg2 instanceof Object),
-    process: (arg1, arg2, func) => ({ children: func(arg1, arg2) }),
+    check: (obj1, obj2, key) => !(obj1[key] instanceof Array && obj2[key] instanceof Array) &&
+    (obj1[key] instanceof Object && obj2[key] instanceof Object),
+    process: (obj1, obj2, key, func) => ({ children: func(obj1[key], obj2[key]) }),
   },
   {
     type: 'deleted',
-    check: (arg1, arg2) => (arg1 && !arg2),
-    process: arg1 => ({ value: arg1 }),
+    check: (obj1, obj2, key) => !_.has(obj2, key),
+    process: (obj1, obj2, key) => ({ value: obj1[key] }),
   },
   {
     type: 'added',
-    check: (arg1, arg2) => (!arg1 && arg2),
-    process: (arg1, arg2) => ({ value: arg2 }),
+    check: (obj1, obj2, key) => !_.has(obj1, key),
+    process: (obj1, obj2, key) => ({ value: obj2[key] }),
   },
   {
     type: 'changed',
-    check: (arg1, arg2) => !(arg1 instanceof Object && arg2 instanceof Object) &&
-    (arg1 !== arg2),
-    process: (arg1, arg2) => ({ valueBefore: arg1, valueAfter: arg2 }),
+    check: (obj1, obj2, key) => (obj1[key] !== obj2[key]),
+    process: (obj1, obj2, key) => ({ valueBefore: obj1[key], valueAfter: obj2[key] }),
   },
   {
     type: 'unchanged',
-    check: (arg1, arg2) => arg1 === arg2,
-    process: arg1 => ({ value: arg1 }),
+    check: (obj1, obj2, key) => obj1[key] === obj2[key],
+    process: (obj1, obj2, key) => ({ value: obj1[key] }),
   },
 ];
 
-const getTypeAction = (argObj1, argObj2) =>
-  _.find(typeActions, ({ check }) => check(argObj1, argObj2));
+const getTypeAction = (obj1, obj2, key) =>
+  _.find(typeActions, ({ check }) => check(obj1, obj2, key));
 
 const getAst = (objBefore, objAfter) => {
   const keys = _.union(_.keys(objBefore), _.keys(objAfter));
   const resultAst = keys.map((key) => {
-    const valBefore = objBefore[key];
-    const valAfter = objAfter[key];
-    const { type, process } = getTypeAction(valBefore, valAfter);
-    return { type, name: key, ...process(valBefore, valAfter, getAst) };
+    const { type, process } = getTypeAction(objBefore, objAfter, key);
+    return { type, name: key, ...process(objBefore, objAfter, key, getAst) };
   });
   return resultAst;
 };

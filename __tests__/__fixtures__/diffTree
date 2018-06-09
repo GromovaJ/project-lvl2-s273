@@ -5,7 +5,7 @@
       + setting3: {
             key: value
         }
-      - setting3: true
+      - setting3: false
         setting6: {
             key: value
           + ops: vops
