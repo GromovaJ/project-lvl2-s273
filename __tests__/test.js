@@ -28,21 +28,36 @@ describe('Test', () => {
   });
 });
 
-describe('Tree Test', () => {
-  it('jsonDiff', () => {
-    const filePathBefore = '__tests__/__fixtures__/beforeTree.json';
-    const filePathAfter = '__tests__/__fixtures__/afterTree.json';
-    const filePathDiff = '__tests__/__fixtures__/diffTree';
+describe('Tree Test Json', () => {
+  const filePathBefore = '__tests__/__fixtures__/beforeTree.json';
+  const filePathAfter = '__tests__/__fixtures__/afterTree.json';
+  const filePathDiff = '__tests__/__fixtures__/diffTree';
+  const filePathDiffPlain = '__tests__/__fixtures__/diffPlain';
+  it('#default format', () => {
     const expected = fs.readFileSync(filePathDiff, 'utf8');
     const actual = genDiff(filePathBefore, filePathAfter);
     expect(actual).toBe(expected);
   });
-  it('yamlDiff', () => {
-    const filePathBefore = '__tests__/__fixtures__/beforeTree.yaml';
-    const filePathAfter = '__tests__/__fixtures__/afterTree.yaml';
-    const filePathDiff = '__tests__/__fixtures__/diffTree';
+  it('#plain format', () => {
+    const expected = fs.readFileSync(filePathDiffPlain, 'utf8');
+    const actual = genDiff(filePathBefore, filePathAfter, 'plain');
+    expect(actual).toBe(expected);
+  });
+});
+
+describe('Tree Test Yaml', () => {
+  const filePathBefore = '__tests__/__fixtures__/beforeTree.yaml';
+  const filePathAfter = '__tests__/__fixtures__/afterTree.yaml';
+  const filePathDiff = '__tests__/__fixtures__/diffTree';
+  const filePathDiffPlain = '__tests__/__fixtures__/diffPlain';
+  it('#default format', () => {
     const expected = fs.readFileSync(filePathDiff, 'utf8');
     const actual = genDiff(filePathBefore, filePathAfter);
+    expect(actual).toBe(expected);
+  });
+  it('#plain format', () => {
+    const expected = fs.readFileSync(filePathDiffPlain, 'utf8');
+    const actual = genDiff(filePathBefore, filePathAfter, 'plain');
     expect(actual).toBe(expected);
   });
 });

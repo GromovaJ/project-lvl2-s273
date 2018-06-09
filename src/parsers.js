@@ -7,10 +7,10 @@ const parsers = {
   ini: ini.parse,
 };
 
-export default format => (data) => {
-  const parse = parsers[format];
+export default extension => (data) => {
+  const parse = parsers[extension];
   if (!parse) {
-    throw new Error(`unkown format: ${format}`);
+    throw new Error(`unkown format: ${extension}`);
   }
   return parse(data);
 };

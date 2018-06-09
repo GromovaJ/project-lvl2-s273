@@ -2,7 +2,7 @@ import fs from 'fs';
 import _ from 'lodash';
 import path from 'path';
 import getParser from './parsers';
-import getRender from './render';
+import getRenderer from './renderers';
 
 const typeActions = [
   {
@@ -45,14 +45,15 @@ const getAst = (objBefore, objAfter) => {
   return resultAst;
 };
 
-const genDiff = (firstFile, secondFile) => {
+const genDiff = (firstFile, secondFile, format = 'default') => {
   const getFileContent = filePath => fs.readFileSync(filePath, 'utf-8');
-  const format = path.extname(firstFile).slice(1);
-  const parse = getParser(format);
+  const extension = path.extname(firstFile).slice(1);
+  const parse = getParser(extension);
   const firstObj = parse(getFileContent(firstFile));
   const secondObj = parse(getFileContent(secondFile));
   const ast = getAst(firstObj, secondObj);
-  const result = `{\n${getRender(ast)}\n}\n`;
+  const render = getRenderer(format);
+  const result = `{\n${render(ast)}\n}\n`;
   return result;
 };
 export default genDiff;

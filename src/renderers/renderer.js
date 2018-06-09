@@ -32,12 +32,12 @@ const outputStrings = {
     stringify(obj.name, obj.valueBefore, level)}`,
 };
 
-const getRender = (ast, level = 2) => {
+const getRenderer = (ast, level = 2) => {
   const resultString = ast.map((node) => {
     const getOutputStr = outputStrings[node.type];
-    return ' '.repeat(level) + getOutputStr(node, level, getRender);
+    return ' '.repeat(level) + getOutputStr(node, level, getRenderer);
   }).join('\n');
   return resultString;
 };
 
-export default getRender;
+export default getRenderer;
