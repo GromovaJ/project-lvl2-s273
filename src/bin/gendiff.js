@@ -12,5 +12,3 @@ program
     console.log(genDiff(firstConfig, secondConfig, options.format));
   })
   .parse(process.argv);
-
-console.log('  - %s format', program.format);
