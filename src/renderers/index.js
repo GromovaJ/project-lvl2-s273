@@ -1,9 +1,11 @@
-import getRenderer from './renderer';
+import getGeneralRenderer from './generalRenderer';
 import getPlainRenderer from './plainRenderer';
+import getJsonRenderer from './jsonRenderer';
 
 const renderers = {
-  default: getRenderer,
+  default: getGeneralRenderer,
   plain: getPlainRenderer,
+  json: getJsonRenderer,
 };
 
 export default format => (data) => {
