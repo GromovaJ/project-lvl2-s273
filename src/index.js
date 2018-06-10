@@ -45,7 +45,7 @@ const getAst = (objBefore, objAfter) => {
   return resultAst;
 };
 
-const genDiff = (firstFile, secondFile, format = 'default') => {
+const genDiff = (firstFile, secondFile, format) => {
   const getFileContent = filePath => fs.readFileSync(filePath, 'utf-8');
   const extension = path.extname(firstFile).slice(1);
   const parse = getParser(extension);
