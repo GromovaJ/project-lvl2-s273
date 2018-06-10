@@ -15,23 +15,26 @@ const propertyActions = [
   },
 ];
 
-const getOutputValue = (value, type) => {
+const getValue = (value, type) => {
   const { process } = _.find(propertyActions, ({ check }) => check(value, type));
   return process(value);
 };
+
+const getPartString = path => `Property '${path.join('.')}' was`;
+
 const outputStrings = {
   withChildren: (node, path, func) => func(node.children, path),
-  deleted: (node, path) => `Property '${path}' was removed`,
-  added: (node, path) => `Property '${path}' was added with ${
-    getOutputValue(node.value)}`,
-  changed: (node, path) => `Property '${path}' was updated. From ${
-    getOutputValue(node.valueBefore, node.type)} to ${
-    getOutputValue(node.valueAfter, node.type)}`,
+  deleted: (node, path) => `${getPartString(path)} removed`,
+  added: (node, path) => `${getPartString(path)} added with ${
+    getValue(node.value)}`,
+  changed: (node, path) => `${getPartString(path)} updated. From ${
+    getValue(node.valueBefore, node.type)} to ${
+    getValue(node.valueAfter, node.type)}`,
 };
 
 const getPlainRenderer = (ast, path = []) => {
   const result = ast.filter(node => node.type !== 'unchanged').map((node) => {
-    const fullPath = _.flatten([path, node.name]).join('.');
+    const fullPath = [...path, node.key];
     const getOutputStr = outputStrings[node.type];
     const rendererStr = getOutputStr(node, fullPath, getPlainRenderer);
     return rendererStr;
