@@ -40,7 +40,7 @@ const getAst = (objBefore, objAfter) => {
   const keys = _.union(_.keys(objBefore), _.keys(objAfter));
   const resultAst = keys.map((key) => {
     const { type, process } = getTypeAction(objBefore, objAfter, key);
-    return { type, name: key, ...process(objBefore, objAfter, key, getAst) };
+    return { type, key, ...process(objBefore, objAfter, key, getAst) };
   });
   return resultAst;
 };
@@ -53,7 +53,6 @@ const genDiff = (firstFile, secondFile, format = 'default') => {
   const secondObj = parse(getFileContent(secondFile));
   const ast = getAst(firstObj, secondObj);
   const render = getRenderer(format);
-  const result = `{\n${render(ast)}\n}\n`;
-  return result;
+  return render(ast);
 };
 export default genDiff;
