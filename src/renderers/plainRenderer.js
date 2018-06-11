@@ -32,13 +32,13 @@ const outputStrings = {
     getValue(node.valueAfter, node.type)}`,
 };
 
-const getPlainRenderer = (ast, path = []) => {
+const renderDiffPlain = (ast, path = []) => {
   const result = ast.filter(node => node.type !== 'unchanged').map((node) => {
     const fullPath = [...path, node.key];
     const getOutputStr = outputStrings[node.type];
-    const rendererStr = getOutputStr(node, fullPath, getPlainRenderer);
+    const rendererStr = getOutputStr(node, fullPath, renderDiffPlain);
     return rendererStr;
   });
   return _.flatten(result).join('\n');
 };
-export default getPlainRenderer;
+export default renderDiffPlain;

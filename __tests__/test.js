@@ -4,10 +4,10 @@ import genDiff from '../src/';
 describe('Test - files.json', () => {
   const filePathBefore = '__tests__/__fixtures__/before.json';
   const filePathAfter = '__tests__/__fixtures__/after.json';
-  it('#general format', () => {
+  it('#text format', () => {
     const filePathDiff = '__tests__/__fixtures__/diff';
     const expected = fs.readFileSync(filePathDiff, 'utf8');
-    const actual = genDiff(filePathBefore, filePathAfter, 'general');
+    const actual = genDiff(filePathBefore, filePathAfter, 'text');
     expect(actual).toBe(expected);
   });
   it('#json format', () => {
@@ -19,23 +19,23 @@ describe('Test - files.json', () => {
 });
 
 describe('Test - files.yaml', () => {
-  it('#general format', () => {
+  it('#text format', () => {
     const filePathBefore = '__tests__/__fixtures__/before.yaml';
     const filePathAfter = '__tests__/__fixtures__/after.yaml';
     const filePathDiff = '__tests__/__fixtures__/diff';
     const expected = fs.readFileSync(filePathDiff, 'utf8');
-    const actual = genDiff(filePathBefore, filePathAfter, 'general');
+    const actual = genDiff(filePathBefore, filePathAfter, 'text');
     expect(actual).toBe(expected);
   });
 });
 
 describe('Test - files.ini', () => {
-  it('#general format', () => {
+  it('#text format', () => {
     const filePathBefore = '__tests__/__fixtures__/before.ini';
     const filePathAfter = '__tests__/__fixtures__/after.ini';
     const filePathDiff = '__tests__/__fixtures__/diff';
     const expected = fs.readFileSync(filePathDiff, 'utf8');
-    const actual = genDiff(filePathBefore, filePathAfter, 'general');
+    const actual = genDiff(filePathBefore, filePathAfter, 'text');
     expect(actual).toBe(expected);
   });
 });
@@ -43,10 +43,10 @@ describe('Test - files.ini', () => {
 describe('Test Tree - files.json', () => {
   const filePathBefore = '__tests__/__fixtures__/beforeTree.json';
   const filePathAfter = '__tests__/__fixtures__/afterTree.json';
-  it('#general format', () => {
+  it('#text format', () => {
     const filePathDiff = '__tests__/__fixtures__/diffTree';
     const expected = fs.readFileSync(filePathDiff, 'utf8');
-    const actual = genDiff(filePathBefore, filePathAfter, 'general');
+    const actual = genDiff(filePathBefore, filePathAfter, 'text');
     expect(actual).toBe(expected);
   });
   it('#plain format', () => {
@@ -66,10 +66,10 @@ describe('Test Tree - files.json', () => {
 describe('Test Tree - files.yaml', () => {
   const filePathBefore = '__tests__/__fixtures__/beforeTree.yaml';
   const filePathAfter = '__tests__/__fixtures__/afterTree.yaml';
-  it('# general format', () => {
+  it('# text format', () => {
     const filePathDiff = '__tests__/__fixtures__/diffTree';
     const expected = fs.readFileSync(filePathDiff, 'utf8');
-    const actual = genDiff(filePathBefore, filePathAfter, 'general');
+    const actual = genDiff(filePathBefore, filePathAfter, 'text');
     expect(actual).toBe(expected);
   });
   it('#plain format', () => {

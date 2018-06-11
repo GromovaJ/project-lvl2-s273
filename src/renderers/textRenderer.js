@@ -32,15 +32,15 @@ const outputStrings = {
     stringify(obj.key, obj.valueBefore, level, '- ')}`],
 };
 
-const getRenderer = (ast, level = 2) => {
+const renderDiff = (ast, level = 2) => {
   const resultString = ast.map((node) => {
     const getOutputStr = outputStrings[node.type];
-    return getOutputStr(node, level, getRenderer);
+    return getOutputStr(node, level, renderDiff);
   });
   return _.flatten(resultString).join('\n');
 };
-const getGeneralRenderer = (ast, level = 2) => {
-  const result = getRenderer(ast, level);
+const renderDiffText = (ast, level = 2) => {
+  const result = renderDiff(ast, level);
   return `{\n${result}\n}\n`;
 };
-export default getGeneralRenderer;
+export default renderDiffText;

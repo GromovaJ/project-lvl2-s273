@@ -1,11 +1,11 @@
-import getGeneralRenderer from './generalRenderer';
-import getPlainRenderer from './plainRenderer';
-import getJsonRenderer from './jsonRenderer';
+import renderDiffText from './textRenderer';
+import renderDiffPlain from './plainRenderer';
+import renderDiffJson from './jsonRenderer';
 
 const renderers = {
-  general: getGeneralRenderer,
-  plain: getPlainRenderer,
-  json: getJsonRenderer,
+  text: renderDiffText,
+  plain: renderDiffPlain,
+  json: renderDiffJson,
 };
 
 export default format => (data) => {
